@@ -19,14 +19,6 @@ const userSchema = new Schema(
       type: String,
       required: true
     },
-    confirmed: {
-      type: Boolean,
-      default: false,
-    },
-    confirmationCode: {
-      type: String,
-      required: true
-    },
     birth: {
       day: {
         type: String

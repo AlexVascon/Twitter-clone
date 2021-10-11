@@ -1,5 +1,6 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import ConfirmEmailStep from '../../components/confirmEmailStep/ConfirmEmailStep';
+import CreateNewAccount from '../../components/createNewAccount/CreateNewAccount';
 import PasswordStep from '../../components/passwordStep/PasswordStep';
 import StartSignupStep from '../../components/startSignupStep/StartSignupStep';
 
@@ -64,6 +65,15 @@ export default function SignupPage() {
                 password={password}
                 handlePasswordChange={handlePasswordChange}
                 nextStep={nextStep}
+                 /> )
+            case 4: 
+                return ( <CreateNewAccount
+                name={name}
+                password={password}
+                email={email}
+                day={day}
+                month={month}
+                year={year}
                  /> )
             default: 
         }

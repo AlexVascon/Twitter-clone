@@ -29,9 +29,6 @@ function App() {
           <PrivateRoute exact path="/feed" component={Feed} />
         
           <AnonRoute exact path="/signup" component={SignupPage} />
-          <AnonRoute exact path="/test" component={Prototype} />
-          <AnonRoute exact path='/confirm/:email' component={ConfirmPage} />
-          <AnonRoute exact path="/password/:email" component={CreatePassword} />
           <AnonRoute exact path="/login" component={LoginPage} />
        </Switch>
     </AnimatePresence>

@@ -67,11 +67,12 @@ router.post('/setup', async (req, res) => {
 router.post('/signup', async (req, res, next) => {
     try {
 
-        const { email, password, firstName, lastName } = req.body;
+        console.log('signup data:', req.body)
+        const { email, password, name, birthday } = req.body;
 
         // Check if email or password or firstName or lastName are provided as empty string 
-        if (email === '' || password === '' || firstName === '' || lastName === '') {
-        res.status(400).json({ message: "Provide email, password, first name and last name" });
+        if (email === '' || password === '' || name === '') {
+        res.status(400).json({ message: "Provide email, password, name" });
         return;
         }
 
@@ -99,39 +100,18 @@ router.post('/signup', async (req, res, next) => {
         const salt = bcrypt.genSaltSync(saltRounds);
         const hashedPassword = bcrypt.hashSync(password, salt);
 
-        // email verify token process
-        const characters =
-            "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-          let emailToken = "";
-
-          for (let i = 0; i < 5; i++) {
-            emailToken +=
-              characters[Math.floor(Math.random() * characters.length)];
-          }
-   
         const createdUser = await User.create({ 
             email: email, 
+            name: name,
             password: hashedPassword, 
-            firstName: firstName, 
-            lastName: lastName,
-            confirmationCode: emailToken,
+            birthday: {
+                day: birthday.day,
+                month: birthday.month,
+                year: birthday.year
+            },
         });
 
-        sendConfirmationEmail(
-            createdUser.firstName,
-            createdUser.email,
-            createdUser.confirmationCode
-        )
-      
-        // Create a new object that doesn't expose the password
-        const user = { 
-            email: createdUser.email, 
-            firstName: createdUser.firstName, 
-            lastName: createdUser.lastName,
-            _id: createdUser._id
-        };
-
-        res.status(201).json({ user: user });
+        res.status(201).json({ message: 'Account succesfully created' });
   
     } catch (err) {
         console.log(err);
