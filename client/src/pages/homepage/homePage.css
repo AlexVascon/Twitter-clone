@@ -1,0 +1,43 @@
+.home-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.twitter-logo {
+    position: absolute;
+    top: 5%;
+}
+
+.opening-text {
+    max-width: 70%;
+    text-align: left;
+    position: absolute;
+    top: 30%;
+}
+
+.blue-button {
+    background-color: rgb(83, 152, 241);
+    border: none;
+    color: white;
+    border-radius: 1.5em;
+    padding: .9em 5.5em;
+    position: absolute;
+    bottom: 20%;
+    font-weight: 600;
+    font-size: 1em;
+}
+
+.button-link {
+    text-decoration: none;
+    color: white;
+}
+
+.bottom-link {
+    position: absolute;
+    bottom: 5%;
+    text-align: left;
+    left: 12%;
+}
