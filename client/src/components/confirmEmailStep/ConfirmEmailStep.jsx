@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import './confirmPage.css';
+import './confirmEmailStep.css';
 import TextField from '@mui/material/TextField';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import Divider from '@mui/material/Divider';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
-export default function ConfirmPage(props) {
+export default function ConfirmEmailStep(props) {
 
     const { 
         nextStep,
@@ -27,7 +27,7 @@ export default function ConfirmPage(props) {
     }
 
     return (
-        <div className="confirmPage">
+        <div className="confirm-step">
         <ArrowBackIcon className='back-arrow' color='primary' onClick={() => prevStep()}/>
          <TwitterIcon className='twitter-logo' color='primary'/>
             <h1 className='title'>We sent you a code</h1>

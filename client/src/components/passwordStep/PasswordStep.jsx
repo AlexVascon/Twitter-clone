@@ -1,15 +1,11 @@
-import React, { useState} from 'react';
-import './createPassword.css';
-import { useParams } from "react-router-dom";
+import React from 'react';
+import './passwordStep.css';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
-import axios from 'axios';
 
 
-const API_URL = "http://localhost:5005";
-
-export default function CreatePassword(props) {
+export default function PasswordStep(props) {
 
     const { password, handlePasswordChange, nextStep} = props;
 
@@ -23,8 +19,6 @@ export default function CreatePassword(props) {
                 return;
             }
             nextStep();
-            // await axios.post(`${API_URL}/auth/password`, data);
-            // props.history.push('/login');
         } catch (err) {
             console.log(err)
         }
