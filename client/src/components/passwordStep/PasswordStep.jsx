@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState} from 'react';
 import './passwordStep.css';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import TextField from '@mui/material/TextField';
@@ -7,22 +7,25 @@ import Divider from '@mui/material/Divider';
 
 export default function PasswordStep(props) {
 
-    const { password, handlePasswordChange, nextStep} = props;
+    const { 
+        password, 
+        handlePasswordChange, 
+        nextStep
+    } = props;
 
-    const handlePasswordSubmit = async (e) => {
+    const [errorMessage, setErrorMessage] = useState(undefined);
+
+    const handlePasswordSubmit = (e) => {
         e.preventDefault();
 
-        try {
-            const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-            if (!passwordRegex.test(password)) {
-                console.log('weak password');
-                return;
-            }
-            nextStep();
-        } catch (err) {
-            console.log(err)
+        const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+        if (!passwordRegex.test(password)) {
+        setErrorMessage('Must include uppercase, number and special character')
+        return;
         }
+        nextStep(); 
     }
+    
     return (
         <div>
             <TwitterIcon className='twitter-logo' color='primary'/>
@@ -33,6 +36,7 @@ export default function PasswordStep(props) {
             <Divider className='divider-3' variant="middle" />
             <button className='next-button-3' type='submit'>Next</button>
             </form>
+            { errorMessage && <p className="error-message">{errorMessage}</p> }
         </div>
     )
 }

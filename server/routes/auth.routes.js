@@ -8,7 +8,7 @@ const { isAuthenticated } = require('./../middleware/jwt.middleware.js');
 const sendConfirmationEmail = require('../config/nodemailer.config');
 
 
-// create account step 1 
+// send email verification token
 router.post('/setup', async (req, res) => {
     try {
         const { email, name } = req.body;
@@ -61,70 +61,6 @@ router.post('/setup', async (req, res) => {
         res.status(203).json({ emailToken: emailToken });
     } catch (err) {
         res.status(400).json(err)
-    }
-})
-
-// create account step 2
-router.post('/confirm-email', async(req,res) => {
-    try {
-        const { code } = req.body
-        const user = await User.findOne({ confirmationCode: req.body.code })
-        if(!user) {
-            res.status(404).json({ message: 'user not found'})
-            return;
-        }
-
-         // Create a new object that doesn't expose the password
-        const sendUser = { 
-            email: user.email, 
-            name: user.name,
-            _id: user._id
-        };
-
-        res.status(200).json(sendUser)
-
-    } catch (err) {
-
-    }
-} )
-
-// create account step 3
-router.post('/password', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const user = await User.find({ email });
-
-        if(!user) {
-            res.status(404).json({ message: 'user not found '})
-            return;
-        }
-
-        const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-        if (!passwordRegex.test(password)) {
-        res.status(400).json({ message: 'Password must have at least 6 characters and contain at least one number, one lowercase and one uppercase letter.' });
-        return;
-        }
-
-        const salt = bcrypt.genSaltSync(saltRounds);
-        const hashedPassword = bcrypt.hashSync(password, salt);
-
-
-        const confirmNewUser = await User.findByIdAndUpdate(user[0]._id, 
-            { password: hashedPassword },
-            { confirmed: true},
-            { new: true }
-            )
-        // Create a new object that doesn't expose the password
-            const sendUser = { 
-            email: confirmNewUser.email, 
-            name: confirmNewUser.name,
-            _id: confirmNewUser._id
-        };
-
-        res.status(201).json({ user: sendUser });
-
-    } catch (err) {
-
     }
 })
 
@@ -266,33 +202,6 @@ router.get('/verify', isAuthenticated, (req, res, next) => {
     // previously set as the token payload
     res.status(200).json(req.payload);
 });
-
-router.post('/confirmation', async (req,res) => {
-    try {
-        const user = await User.findOne({
-            confirmationCode: req.body.token
-        })
-
-        if (!user) {
-            return res.status(404).send({ message: "User Not found." });
-        }
-
-        user.confirmed = true;
-        user.save((err) => {
-          if (err) {
-            return res.status(500).send({ message: err });
-          }
-          return res
-            .status(200)
-            .json({ message: "Email authenticated. Login" });
-        });
-        
-
-    } catch (err) {
-        res.send('error');
-    }
-})
-
 
 
 module.exports = router;

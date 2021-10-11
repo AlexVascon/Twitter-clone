@@ -20,10 +20,10 @@ export default function ConfirmEmailStep(props) {
 
     const handleCode = e => setCode(e.target.value)
 
-    const handleFormSubmit = async (e) => {
+    const handleFormSubmit = (e) => {
         e.preventDefault();
         if(code === verifyToken) nextStep();
-         else setErrorMessage('invalid code, please check your emails');
+        else setErrorMessage('invalid code, please check your emails');
     }
 
     return (
