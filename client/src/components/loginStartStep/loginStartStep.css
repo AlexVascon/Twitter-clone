@@ -1,0 +1,35 @@
+.login-form {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form label {
+    font-size: 1.2em;
+}
+
+.login-choice {
+    width: 90%;
+    top: 0;
+    position: absolute;
+}
+
+.divider-login {
+    width: 95%;
+    position: fixed;
+    bottom: 9%;
+}
+
+.login-submit {
+    border: none;
+    background-color: rgb(80, 78, 78);
+    color: rgb(207, 204, 204);
+    padding: .5em 1em;
+    border-radius: 1.5em;
+    position: fixed;
+    bottom: 2%;
+    right: 5%;
+    font-weight: 600;
+    font-size: 1.2em;
+}
