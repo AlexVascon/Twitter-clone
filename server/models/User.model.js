@@ -29,7 +29,21 @@ const userSchema = new Schema(
       year: {
         type: String
       }
-    }
+    },
+    profilePicture: {
+      type: String
+    },
+    coverPicture: {
+      type: String
+    },
+    followers: {
+      ref: 'User',
+      type: Schema.Types.ObjectId
+    },
+    following: {
+      ref: 'User',
+      type: Schema.Types.ObjectId
+    },
   },
   {
     timestamps: true,
