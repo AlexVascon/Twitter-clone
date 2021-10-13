@@ -38,11 +38,13 @@ const userSchema = new Schema(
     },
     followers: {
       ref: 'User',
-      type: Schema.Types.ObjectId
+      type: [Schema.Types.ObjectId],
+      default: []
     },
     following: {
       ref: 'User',
-      type: Schema.Types.ObjectId
+      type: [Schema.Types.ObjectId],
+      default: []
     },
   },
   {
