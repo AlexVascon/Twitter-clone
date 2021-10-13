@@ -18,6 +18,4 @@ describe('signup steps', () => {
         });
         expect(res.statusCode).toBe(400);
     })
-
-  
 });

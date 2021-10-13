@@ -51,31 +51,18 @@ function LoginPage(props) {
      case 1: 
      return ( <LoginStartStep 
      nextStep={nextStep}
+     setEmail={setEmail}
       /> )
      case 2: 
-     return ( <LoginPassword /> )
+     return ( <LoginPassword 
+       email={email}
+     /> )
      default:
    }
  }
   
   return (
     <div className="LoginPage">
-    {/* <TwitterIcon className='twitter-logo' color='primary'/>
-      <h1 className='login-title'>To get started, first enter your phone, email address or @username</h1>
-
-      <form className='login-form' onSubmit={handleLoginSubmit}>
-        <label>Email:</label>
-        <input type="text" name="email" value={email} onChange={handleEmail} />
-
-        <label>Password:</label>
-        <input type="password" name="password" value={password} onChange={handlePassword} />
-
-        <button type="submit">Login</button>
-      </form>
-      { errorMessage && <p className="error-message">{errorMessage}</p> }
-
-      <p>Don't have an account yet?</p>
-      <Link to={"/signup"}> Sign Up</Link> */}
       {renderStep()}
     </div>
   )

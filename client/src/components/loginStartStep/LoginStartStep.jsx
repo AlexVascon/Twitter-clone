@@ -7,7 +7,10 @@ import Divider from '@mui/material/Divider';
 
 export default function LoginStartStep(props) {
 
-    const { nextStep } = props;
+    const { 
+        nextStep,
+        setEmail 
+    } = props;
 
     const [inputChoice, setInputChoice] = useState('');
     const [errorMessage, setErrorMessage] = useState(undefined);
@@ -18,9 +21,9 @@ export default function LoginStartStep(props) {
         e.preventDefault();
 
         try {
-            const data = { inputChoice }
+            const data = { inputChoice };
             await axios.post('auth/user/check-exist', data);
-            console.log('here!')
+            setEmail(data?.inputChoice);
             nextStep();
         } catch (err) {
             setErrorMessage(err.response.data.message)

@@ -22,6 +22,7 @@ export default function ConfirmEmailStep(props) {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
+        
         if(code === verifyToken) nextStep();
         else setErrorMessage('invalid code, please check your emails');
     }
