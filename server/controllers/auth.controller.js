@@ -124,7 +124,6 @@ exports.user_check_exists = async (req, res) => {
 exports.login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
-        console.log('login req body:', req.body);
         // Check if email or password are provided as empty string 
         if (email === '' || password === '') {
         res.status(400).json({ message: "Provide email and password." });
@@ -132,6 +131,7 @@ exports.login = async (req, res, next) => {
         }
 
         const foundUser = await User.findOne({ email });
+        
         if (!foundUser) {
             // If the user is not found, send an error response
             res.status(401).json({ message: "User not found." })
