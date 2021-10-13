@@ -1,0 +1,80 @@
+.profile-header {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 7%;
+    border-bottom: 1px solid grey;
+}
+
+.profile-header-container {
+    margin-left: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+}
+
+.profile-header-container h1 {
+    font-size: 1em;
+    margin: 0;
+}
+
+.profile-header-container p {
+    font-size: .9em;
+    margin: 0;
+}
+
+.backdrop-container {
+    border: 1px solid grey;
+    position: absolute;
+    width: 100%;
+    top: 10%;
+    height: 18%;
+}
+
+.profile-data-top {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 25%;
+    width: 99%;
+}
+
+.avatar-container {
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+}
+
+.avatar-container h1 {
+    margin: 0;
+    text-align: start;
+}
+
+.avatar-container p {
+    text-align: start;
+    margin-top: .6em;
+    margin-bottom: 0;
+}
+
+
+.setup-profile-btn {
+    position: absolute;
+    top: 18%;
+    right: 3%;
+    border: 1px solid grey;
+    background-color: transparent;
+    padding: .4em .9em;
+    border-radius: 1.5em;
+}
+
+.profile-tabs {
+    position: absolute;
+    top: 50%;
+    width: 99%;
+}
+
+
+
+
