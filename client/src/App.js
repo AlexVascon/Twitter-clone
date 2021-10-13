@@ -12,9 +12,6 @@ import PrivateRoute from "./components/PrivateRoute";
 import AnonRoute from "./components/AnonRoute";  
 
 import { AnimatePresence } from 'framer-motion';
-import ConfirmPage from './pages/confirmPage/ConfirmPage';
-import CreatePassword from './pages/createPassword/CreatePassword';
-import Prototype from './pages/prototype/Prototype';
 
 
 function App() {
