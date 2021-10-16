@@ -36,17 +36,19 @@ exports.setup = async (req, res) => {
           for (let i = 0; i < 5; i++) {
             emailToken +=
               characters[Math.floor(Math.random() * characters.length)];
-          }
+          };
 
         sendConfirmationEmail(
             name,
             email,
             emailToken
-        )
+        );
 
         res.status(203).json({ emailToken: emailToken });
+
     } catch (err) {
-        res.status(400).json(err)
+        console.error(`setup route: ${err}`);
+        res.status(500).json({ message: `Something went wrong ${err}`});
     }
 };
 
@@ -54,7 +56,6 @@ exports.signup = async (req, res, next) => {
     try {
         const { email, password, name, birthday } = req.body;
 
-        // Check if email or password or firstName or lastName are provided as empty string 
         if (email === '' || password === '' || name === '') {
         res.status(400).json({ message: "Provide email, password, name" });
         return;
@@ -81,13 +82,14 @@ exports.signup = async (req, res, next) => {
             return;
         } 
 
+        // secure password using bcrypt
         const salt = bcrypt.genSaltSync(saltRounds);
         const hashedPassword = bcrypt.hashSync(password, salt);
 
         const createdUser = await User.create({ 
             email: email, 
             name: name,
-            password: hashedPassword, 
+            password: hashedPassword, //save encrypted password
             birthday: {
                 day: birthday.day,
                 month: birthday.month,
@@ -98,7 +100,7 @@ exports.signup = async (req, res, next) => {
         res.status(201).json({ message: 'Account succesfully created' });
   
     } catch (err) {
-        console.log(err);
+        console.error(`signup route: ${err}`);
         res.status(500).json({ message: "Internal Server Error" })
     }
    
@@ -115,8 +117,9 @@ exports.user_check_exists = async (req, res) => {
         }
 
         res.status(404).json({ message: 'invalid credentials'});
+
     } catch (err) {
-        console.log(err);
+        console.error(err);
         res.status(500).json({ message: 'internal server error'});
     }
 }
@@ -124,16 +127,15 @@ exports.user_check_exists = async (req, res) => {
 exports.login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
-        // Check if email or password are provided as empty string 
+
         if (email === '' || password === '') {
         res.status(400).json({ message: "Provide email and password." });
         return;
         }
 
         const foundUser = await User.findOne({ email });
-        
+
         if (!foundUser) {
-            // If the user is not found, send an error response
             res.status(401).json({ message: "User not found." })
             return;
         }
@@ -143,10 +145,10 @@ exports.login = async (req, res, next) => {
    
          if (passwordCorrect) {
            // Deconstruct the user object to omit the password
-           const { _id, email, name } = foundUser;
+           const { _id, email, name, profilePicture, coverPicture, followers, following, bio, location, website } = foundUser;
            
            // Create an object that will be set as the token payload
-           const payload = { _id, email, name };
+           const payload = { _id, email, name, profilePicture, coverPicture, followers, following, bio, location, website };
     
            // Create and sign the token
            const authToken = jwt.sign( 
@@ -157,12 +159,13 @@ exports.login = async (req, res, next) => {
     
            // Send the token as the response
            res.status(200).json({ authToken: authToken });
+
          } else {
             res.status(401).json({ message: "Unable to authenticate the user" });
         }
   
     } catch (err) {
-        console.log(err);
+        console.error(`login route ${err}`);
         res.status(500).json({ message: "Internal Server Error" });
     }
 
