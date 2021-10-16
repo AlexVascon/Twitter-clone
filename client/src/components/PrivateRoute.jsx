@@ -1,10 +1,8 @@
-// src/components/PrivateRoute.js
-
 import { useContext } from "react";
 import { AuthContext } from "../context/auth.context";
 import { Redirect, Route } from "react-router-dom";
 
-function PrivateRoute(props) {
+export default function PrivateRoute(props) {
   // Destructure the props
   const { to, exact, component: Component, ...restProps } = props;
   
@@ -20,4 +18,3 @@ function PrivateRoute(props) {
   return <Route to={to} exact={exact} component={Component} {...restProps} />
 }
 
-export default PrivateRoute;

@@ -31,10 +31,24 @@ const userSchema = new Schema(
       }
     },
     profilePicture: {
-      type: String
+      type: String,
+      default: ''
     },
     coverPicture: {
-      type: String
+      type: String,
+      default: ''
+    },
+    bio: {
+      type: String,
+      default: ''
+    },
+    location: {
+      type: String,
+      default: ''
+    },
+    website: {
+      type: String,
+      default: ''
     },
     followers: {
       ref: 'User',
@@ -43,6 +57,16 @@ const userSchema = new Schema(
     },
     following: {
       ref: 'User',
+      type: [Schema.Types.ObjectId],
+      default: []
+    },
+    tweets: {
+      ref: 'Tweet',
+      type: [Schema.Types.ObjectId],
+      default: []
+    },
+    likes: {
+      ref: 'Tweet',
       type: [Schema.Types.ObjectId],
       default: []
     },

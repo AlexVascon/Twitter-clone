@@ -1,12 +1,15 @@
 import { useState, useContext } from "react";
 import './loginPage.css';
+import { useHistory } from "react-router-dom";
 import axios from '../../service/api'
 import { AuthContext } from '../../context/auth.context';
-import LoginStartStep from "../../components/loginStartStep/LoginStartStep";
-import LoginPassword from "../../components/loginPassword/LoginPassword";
+import LoginStepOne from "../../components/loginSteps/loginStepOne/LoginStepOne";
+import LoginStepTwo from "../../components/loginSteps/loginStepTwo/LoginStepTwo";
 
 
-function LoginPage(props) {
+export default function LoginPage() {
+
+  const history = useHistory();
 
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
@@ -20,9 +23,12 @@ function LoginPage(props) {
       try {
         const requestBody = { email, password };
         const res = await axios.post('auth/login', requestBody)
-        const token = await res.data?.authToken;               
-        await logInUser(token);                                  
-        await props.history.push('/');
+        
+        const token = await res.data?.authToken;    
+
+        history.push('/profile');           
+        await logInUser(token);  
+
       } catch (error) {
         console.error(error);
       }
@@ -39,12 +45,12 @@ function LoginPage(props) {
  const renderStep = () => {
    switch(step) {
      case 1: 
-     return ( <LoginStartStep 
+     return ( <LoginStepOne
      nextStep={nextStep}
      setEmail={setEmail}
       /> )
      case 2: 
-     return ( <LoginPassword 
+     return ( <LoginStepTwo
        email={email}
        password={password}
        setPassword={setPassword}
@@ -61,4 +67,3 @@ function LoginPage(props) {
   )
 }
 
-export default LoginPage;

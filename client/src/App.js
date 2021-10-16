@@ -12,17 +12,19 @@ import PrivateRoute from "./components/PrivateRoute";
 import AnonRoute from "./components/AnonRoute";  
 
 import { AnimatePresence } from 'framer-motion';
+import ProfileEditPage from './pages/profileEditPage/ProfileEditPage';
 
 
 function App() {
   const location = useLocation();
   return (
     <div className="App">
-     <Navbar />
+     {/* <Navbar /> */}
      <AnimatePresence existBeforeEnter>
        <Switch location={location} key={location.key}>      
           <Route exact path="/" component={HomePage} />
           <PrivateRoute exact path="/profile" component={ProfilePage} />
+          <PrivateRoute exact path="/profile/edit" component={ProfileEditPage} />
           <PrivateRoute exact path="/feed" component={Feed} />
         
           <AnonRoute exact path="/signup" component={SignupPage} />

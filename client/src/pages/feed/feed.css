@@ -1,0 +1,92 @@
+.feed-header {
+    display: flex;
+    align-items: center;
+    margin-left: 1em;
+}
+
+.feed-title {
+    margin-left: 1.5em;
+}
+
+.follow-suggestions {
+    display: flex;
+    padding: .5em;
+}
+
+.user-description {
+    text-align: left;
+    align-self: center;
+    margin-left: .8em;
+}
+
+.user-name {
+    margin-top: .2em;
+}
+
+.user-bio {
+    margin-top: 0;
+}
+
+.follow-btn {
+    position: absolute;
+    right: 5%;
+    margin-top: .2em;
+    border: none;
+    background-color: black;
+    color: white;
+    padding: .6em 1.3em;
+    border-radius: 1.5em;
+    font-weight: 600;
+}
+
+.show-more-btn-container {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    margin-bottom: .8em;
+}
+
+.show-more-btn {
+    border: none;
+    background: none;
+    color: rgb(53, 158, 255);
+}
+
+.exit-arrow {
+    margin-left: .5em;
+}
+
+.connect-text {
+   color: black;
+    margin: 0 1.5em;
+}
+
+.users-list-title {
+    margin-left: .8em;
+}
+
+.following-tweets-list {
+    margin-top: 1em;
+    margin-left: .8em;
+    margin-right: .6em;
+}
+
+.sidebar-header {
+    display: flex;
+    width: 85%;
+    justify-content:space-between;
+    align-items: center;
+    padding: 0;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.sidebar-user {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: .7em;
+    padding-top: .7em;
+}

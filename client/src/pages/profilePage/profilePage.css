@@ -1,9 +1,9 @@
 .profile-header {
     position: absolute;
     display: flex;
+    align-items: center;
     width: 100%;
     height: 7%;
-    border-bottom: 1px solid grey;
 }
 
 .profile-header-container {
@@ -15,6 +15,11 @@
     text-align: center;
 }
 
+.profile-back-btn {
+    position: absolute;
+    left: 3%;
+}
+
 .profile-header-container h1 {
     font-size: 1em;
     margin: 0;
@@ -23,21 +28,23 @@
 .profile-header-container p {
     font-size: .9em;
     margin: 0;
+    color: grey;
 }
 
 .backdrop-container {
     border: 1px solid grey;
     position: absolute;
     width: 100%;
-    top: 10%;
+    top: 7.3%;
     height: 18%;
+    background-size: cover;
 }
 
 .profile-data-top {
     display: flex;
     justify-content: space-between;
     position: absolute;
-    top: 25%;
+    top: 22%;
     width: 99%;
 }
 
@@ -56,6 +63,7 @@
     text-align: start;
     margin-top: .6em;
     margin-bottom: 0;
+    color: grey;
 }
 
 
@@ -69,10 +77,124 @@
     border-radius: 1.5em;
 }
 
+.profile-setup-link {
+    text-decoration: none;
+    color: black;
+}
+
+.profile-bio {
+    color: grey;
+}
+
 .profile-tabs {
     position: absolute;
     top: 50%;
     width: 99%;
+}
+
+.tweet-container {
+    border-bottom: 1px solid grey;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+}
+
+.top-half-tweet {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.top-middle-tweet {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    position: absolute;
+    left: 25%;
+}
+
+.tweet-creator-name {
+    margin: 0;
+}
+
+.tweet-date {
+    font-weight: 300;
+}
+
+.tweet-description {
+    margin: 0;
+}
+
+.bottom-half-tweet {
+    display: flex;
+    padding-top: .8em;
+    justify-content: space-around;
+}
+
+.floating-tweet-icon {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 5%;
+    right: 7%;
+    background-color: rgb(83, 169, 250);
+    padding: .5em;
+    border-radius: 2em;
+}
+
+.tweet-popup-top {
+    display: flex;
+    padding: .5em;
+    justify-content: space-between;
+    background-color: white;
+    color: black
+}
+
+.exit-tweet {
+    margin-left: .5em;
+}
+
+.tweet-submit {
+    position: fixed;
+    top: 2%;
+    right: 5%;
+    border: none;
+    background-color: rgb(112, 197, 253);
+    color: white;
+    padding: .5em 1.2em;
+    border-radius: 1.5em;
+}
+
+.tweet-popup-container {
+    display: flex;
+    align-items: center;
+}
+
+.tweet-avatar {
+    margin-left: .5em;
+}
+
+.tweet-form {
+    margin-left: .7em;
+    
+}
+
+.tweet-form input {
+    border: none;
+    outline: none;
+}
+
+.reply-access {
+    display: flex;
+    align-items: center;
+    margin-left: 4em;
+    color: rgb(0, 140, 255);
+}
+
+.input-options {
+    display: flex;
+    justify-content: center;
+
 }
 
 

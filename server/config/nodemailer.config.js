@@ -1,9 +1,8 @@
 const nodemailer = require("nodemailer");
 
+
 const user = process.env.EMAIL_USER;
 const pass = process.env.EMAIL_PASS;
-
-const URL = 'http://localhost:5005'
 
 const transport = nodemailer.createTransport({
   service: "Gmail",
@@ -31,7 +30,7 @@ const sendConfirmationEmail = (name, email, emailToken) => {
           <h1>${emailToken}</h1>
           </div>`,
     })
-    .catch((err) => console.log("error", err));
+    .catch((err) => console.error("error", err));
 };
 
 module.exports = sendConfirmationEmail;

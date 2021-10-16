@@ -1,12 +1,14 @@
-// src/context/auth.context.js
-
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-const API_URL = "http://localhost:5005";
+import axios from '../service/api';
+import { useHistory } from "react-router-dom";
+
 
 const AuthContext = React.createContext();
 
 function AuthProviderWrapper(props) {
+
+  const history = useHistory();
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -15,10 +17,11 @@ function AuthProviderWrapper(props) {
       try {
         const storedToken = localStorage.getItem('authToken');
         if(storedToken) {
-            const res = await axios.get(`${API_URL}/auth/verify`, { headers: { Authorization: `Bearer ${storedToken}`} });
+            const res = await axios.get('auth/verify', { headers: { Authorization: `Bearer ${storedToken}`} });
             const user = res.data;
             setUser(user);
             setIsLoggedIn(true);
+            history.push('/profile');
             setIsLoading(false);
         } else {
             setIsLoggedIn(false);
@@ -45,7 +48,7 @@ function AuthProviderWrapper(props) {
    }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, isLoading, user, logInUser, logOutUser }}>
+    <AuthContext.Provider value={{ isLoggedIn, isLoading, user, logInUser, logOutUser, setUser }}>
       {props.children}
     </AuthContext.Provider>
   )

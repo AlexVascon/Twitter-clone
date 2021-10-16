@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import ConfirmEmailStep from '../../components/confirmEmailStep/ConfirmEmailStep';
-import CreateNewAccount from '../../components/createNewAccount/CreateNewAccount';
-import PasswordStep from '../../components/passwordStep/PasswordStep';
-import StartSignupStep from '../../components/startSignupStep/StartSignupStep';
+import SignupStepFour from '../../components/signupSteps/signupStepFour/SignupStepFour';
+import SignupStepOne from '../../components/signupSteps/signupStepOne/SignupStepOne';
+import SignupStepThree from '../../components/signupSteps/signupStepThree/SignupStepThree';
+import SignupStepTwo from '../../components/signupSteps/signupStepTwo/SignupStepTwo';
 
 
 export default function SignupPage() {
@@ -10,6 +10,7 @@ export default function SignupPage() {
     const [step, setStep] = useState(1);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
@@ -18,7 +19,12 @@ export default function SignupPage() {
     const [password, setPassword] = useState('');
 
     const handleNameChange = e => setName(e.target.value);
-    const handleEmailChange = e => setEmail(e.target.value);
+    const handleEmailChange = e => {
+      setEmail(e.target.value)
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+        if (!emailRegex.test(email)) setEmailError('Please enter a valid email.'); 
+        else setEmailError('');   
+    };
     const handleDayChange = e => setDay(e.value);
     const handleMonthChange = e => setMonth(e.value);
     const handleYearChange = e => setYear(e.value);
@@ -36,11 +42,12 @@ export default function SignupPage() {
     const renderMultiForm = () => {
         switch(step) {
             case 1:
-                return ( <StartSignupStep
+                return ( <SignupStepOne
                 nextStep={nextStep}
                 name={name}
                 handleNameChange={handleNameChange}
                 email={email}
+                emailError={emailError}
                 handleEmailChange={handleEmailChange}
                 day={day}
                 handleDayChange={handleDayChange}
@@ -53,7 +60,7 @@ export default function SignupPage() {
                 setVerifyToken={setVerifyToken}
                  />)
             case 2: 
-                return ( <ConfirmEmailStep
+                return ( <SignupStepTwo
                 nextStep={nextStep}
                 prevStep={prevStep}
                 email={email}
@@ -61,13 +68,13 @@ export default function SignupPage() {
                 handleVerifyTokenChange={handleVerifyTokenChange}
                 /> )
             case 3: 
-                return ( <PasswordStep
+                return ( <SignupStepThree
                 password={password}
                 handlePasswordChange={handlePasswordChange}
                 nextStep={nextStep}
                  /> )
             case 4: 
-                return ( <CreateNewAccount
+                return ( <SignupStepFour
                 name={name}
                 password={password}
                 email={email}
