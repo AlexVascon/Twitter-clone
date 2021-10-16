@@ -1,0 +1,78 @@
+.edit-profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    height: 4.8%;
+    width: 100%;
+    border-top: 1px solid rgb(189, 187, 187);
+}
+
+.edit-profile-back-arrow {
+    position: absolute;
+    left: 2%;
+}
+
+.edit-profile-title {
+    position: absolute;
+    left: 15%;
+}
+
+.edit-profile-save-btn {
+    border: none;
+    position: absolute;
+    right: 5%;
+    background-color: rgb(74, 157, 253);
+    padding: .7em 1.2em;
+    border-radius: 1.2em;
+    color: white;
+}
+
+.backdrop-upload-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 5%;
+    width: 100%;
+    height: 13%;
+    outline: 1px solid rgb(189, 187, 187);
+    background-size: cover;
+}
+
+.camera-btn {
+    border: none;
+    background-color: transparent;
+}
+
+.profile-image-upload-container {
+    display: flex;
+    position: absolute;
+    top: 15%;
+    left: 5%;
+}
+
+.test {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.profile-backdrop-edit-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+    height: 40%;
+}
+
+.multi-text-form {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    top: 27%;
+    width: 90%;
+    left: 5%;
+}
+
