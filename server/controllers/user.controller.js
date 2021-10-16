@@ -2,6 +2,24 @@ const User = require('../models/User.model');
 const Tweet = require('../models/Tweet.model');
 
 
+exports.get_follow_options = async (req, res) => {
+    try {
+        const loggedUser = await User.findById(req.payload._id);
+
+        const listOfAllUsers = await User.find();
+
+        const filterNotAlreadyFollowing = listOfAllUsers.filter(user => {
+            return (user.id !== loggedUser.id) && !loggedUser.following.includes(user._id);
+        });
+
+        res.status(200).json({ usersList: filterNotAlreadyFollowing });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json(err);
+    }
+}
+
 exports.get_all_users = async (req, res) => {
     try {
         const users = await User.find().populate('tweets');

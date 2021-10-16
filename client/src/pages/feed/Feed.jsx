@@ -126,16 +126,16 @@ export default function Feed() {
   }, []);
 
   useEffect(() => {
-    const getAllUsers = async () => {
+    const getUsersNotFollowing = async () => {
       try {
-        const usersData = await authAxios.get("user/all");
+        const usersData = await authAxios.get('user/all/non/following');
         if (usersData?.data?.users?.length <= 3) {
-            setRestOfUsers(usersData?.data?.users);
-            setUsers(usersData?.data?.users);
+            setRestOfUsers(usersData?.data?.usersList);
+            setUsers(usersData?.data?.usersList);
             
         } else {
-            setRestOfUsers(usersData?.data?.users);
-            setUsers(usersData?.data?.users?.slice(0,3));
+            setRestOfUsers(usersData?.data?.usersList);
+            setUsers(usersData?.data?.usersList?.slice(0,3));
             
         }
         
@@ -143,7 +143,7 @@ export default function Feed() {
         console.error(err);
       }
     };
-    getAllUsers();
+    getUsersNotFollowing();
   }, []);
 
   const followUser = async (userId) => {
