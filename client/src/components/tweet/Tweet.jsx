@@ -102,6 +102,7 @@ export default function Tweet(props) {
       const res = await authAxios.post("tweet/comment", tweetData);
       setComments([...comments, res?.data?.comment ]);
       setOpenReply(false);
+      getTweet();
     } catch (err) {
       console.error(err);
     }

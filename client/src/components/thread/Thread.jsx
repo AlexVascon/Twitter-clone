@@ -101,6 +101,7 @@ export default function Thread(props) {
       const tweetData = { tweetDescription, replyTweet };
       const res = await authAxios.post("tweet/comment", tweetData);
       setComments([...comments, res?.data?.comment ]);
+      getTweet();
       setOpenReply(false);
     } catch (err) {
       console.error(err);
