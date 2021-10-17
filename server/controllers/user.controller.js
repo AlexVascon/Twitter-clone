@@ -7,9 +7,9 @@ exports.get_follow_options = async (req, res) => {
         const loggedUser = await User.findById(req.payload._id);
 
         const listOfAllUsers = await User.find();
-
+        
         const filterNotAlreadyFollowing = listOfAllUsers.filter(user => {
-            return (user.id !== loggedUser.id) && !loggedUser.following.includes(user._id);
+            return (user.id !== loggedUser.id) && !loggedUser.following.includes(user.id);
         });
 
         res.status(200).json({ usersList: filterNotAlreadyFollowing });
@@ -83,8 +83,8 @@ exports.following_tweets = async (req, res) => {
             const { _id, name, profilePicture } = following;
 
             return following.tweets.map(tweet => {
-                const { description , createdAt, id } = tweet;
-                return { _id, name, profilePicture, description, createdAt, id };
+                const { description , createdAt, id, likes, comments } = tweet;
+                return { _id, name, profilePicture, description, createdAt, id, likes, comments };
             })
         })
         .flat();
@@ -110,7 +110,7 @@ exports.like_tweet = async (req, res) => {
                 $pull: { likes: checkLiked.id } },
                 { new: true }
             );
-            await Tweet.findByIdAndUpdate(checkLiked._id, {
+            await Tweet.findByIdAndUpdate(checkLiked.id, {
                 $pull: { likes: loggedUser.id } },
                 { new: true }
                 )
@@ -123,7 +123,7 @@ exports.like_tweet = async (req, res) => {
             { new: true }
             )
 
-        await Tweet.findByIdAndUpdate(checkLiked._id, {
+        await Tweet.findByIdAndUpdate(checkLiked.id, {
             $addToSet: { likes: loggedUser.id } },
             { new: true }
             )

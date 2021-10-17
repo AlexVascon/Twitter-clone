@@ -25,7 +25,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function Tweet(props) {
+
   const { tweet } = props;
+
+  console.log('tweet:', tweet);
 
   const history = useHistory();
 
@@ -93,7 +96,6 @@ export default function Tweet(props) {
     try {
       const tweetData = { tweetDescription, replyTweet };
       await authAxios.post("tweet/comment", tweetData);
-      console.log("here?");
       history.push("/feed");
     } catch (err) {
       console.error(err);
@@ -118,8 +120,10 @@ export default function Tweet(props) {
           <ChatBubbleOutlineRoundedIcon
             onClick={() => replyTweetPrompt(tweet)}
           />
+          <span className='reply-count' >{tweet.comments.length}</span>
           <RepeatRoundedIcon />
           <FavoriteBorderRoundedIcon onClick={() => likedTweet(tweet.id)} />
+          <span className='like-count' >{tweet.likes.length}</span>
           <ShareOutlinedIcon />
         </div>
       </div>
@@ -157,8 +161,10 @@ export default function Tweet(props) {
               <ChatBubbleOutlineRoundedIcon
                 onClick={() => replyTweetPrompt(tweet)}
               />
+              <span className='reply-count' >{tweet.comments.length}</span>
               <RepeatRoundedIcon />
               <FavoriteBorderRoundedIcon onClick={() => likedTweet(tweet.id)} />
+              <span className='like-count' >{tweet.likes.length}</span>
               <ShareOutlinedIcon />
             </div>
           </div>
@@ -168,29 +174,6 @@ export default function Tweet(props) {
             return (
               <>
               <Thread tweet={comment} />
-                {/* <div className="tweet-expand-container">
-                  <div className="top-half-tweet">
-                    <Avatar
-                      src={comment.profilePicture}
-                      sx={{ width: 50, height: 50 }}
-                    />
-                    <div className="top-middle-tweet-expanded">
-                      <h4 className="tweet-creator-name">{comment.name}</h4>
-                      <p className="tweet-description">{comment.description}</p>
-                    </div>
-                    <MoreHorizIcon className="tweet-option-icon" />
-                  </div>
-                  <div className="bottom-half-tweet">
-                    <ChatBubbleOutlineRoundedIcon
-                      onClick={() => replyTweetPrompt(comment)}
-                    />
-                    <RepeatRoundedIcon />
-                    <FavoriteBorderRoundedIcon
-                      onClick={() => likedTweet(comment.id)}
-                    />
-                    <ShareOutlinedIcon />
-                  </div>
-                </div> */}
               </>
             );
           })}

@@ -117,8 +117,10 @@ export default function Thread(props) {
           <ChatBubbleOutlineRoundedIcon
             onClick={() => replyTweetPrompt(tweet)}
           />
+           <span className='reply-count' >{tweet.comments.length}</span>
           <RepeatRoundedIcon />
           <FavoriteBorderRoundedIcon onClick={() => likedTweet(tweet.id)} />
+          <span className='like-count' >{tweet.likes.length}</span>
           <ShareOutlinedIcon />
         </div>
       </div>
@@ -156,8 +158,10 @@ export default function Thread(props) {
               <ChatBubbleOutlineRoundedIcon
                 onClick={() => replyTweetPrompt(tweet)}
               />
+              <span className='reply-count' >{tweet.comments.length}</span>
               <RepeatRoundedIcon />
               <FavoriteBorderRoundedIcon onClick={() => likedTweet(tweet.id)} />
+              <span className='like-count' >{tweet.likes.length}</span>
               <ShareOutlinedIcon />
             </div>
           </div>

@@ -18,6 +18,7 @@ const tweetSchema = new Schema(
          },
          likes: {
              type: [String],
+             default: [],
          },
     },
     {

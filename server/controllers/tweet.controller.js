@@ -67,18 +67,17 @@ exports.tweet_comments = async (req, res) => {
             }
         });
 
-        console.log('comment origin:', commentsOrigin);
-
         const extractedComments = commentsOrigin.comments.map(tweet => {
-            const { id, description, createdAt } = tweet;
+            const { id, description, createdAt, likes, comments } = tweet;
             const { _id, profilePicture, name } = tweet.creator;
-            return { _id, profilePicture, name, id, description, createdAt }
+            return { _id, profilePicture, name, id, description, createdAt, likes, comments };
         })
 
         res.status(200).json({ comments: extractedComments });
 
     } catch (err) {
-
+        console.error(err);
+        res.status(500).json(err);
     }
 }
 
