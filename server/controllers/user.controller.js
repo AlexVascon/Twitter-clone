@@ -83,8 +83,8 @@ exports.following_tweets = async (req, res) => {
             const { _id, name, profilePicture } = following;
 
             return following.tweets.map(tweet => {
-                const { description , createdAt } = tweet;
-                return { _id, name, profilePicture, description, createdAt };
+                const { description , createdAt, id } = tweet;
+                return { _id, name, profilePicture, description, createdAt, id };
             })
         })
         .flat();
@@ -103,21 +103,28 @@ exports.like_tweet = async (req, res) => {
 
         const loggedUser = await User.findById(req.payload._id);
 
-        if(!loggedUser) throw new Error('logged user not found. Sign in again or try again later');
-
         const checkLiked = await Tweet.findById(tweetId);
 
-        if(loggedUser.likes.includes(checkLiked._id)){
+        if(loggedUser.likes.includes(checkLiked.id)){
             await User.findByIdAndUpdate(req.payload._id, {
-                $pull: { likes: checkLiked._id } },
+                $pull: { likes: checkLiked.id } },
                 { new: true }
             );
+            await Tweet.findByIdAndUpdate(checkLiked._id, {
+                $pull: { likes: loggedUser.id } },
+                { new: true }
+                )
             res.status(200).json({ message: 'removed like'});
             return;
         }
 
         await User.findByIdAndUpdate(req.payload._id, {
-            $addToSet: { likes: checkLiked._id } }, 
+            $addToSet: { likes: checkLiked.id } }, 
+            { new: true }
+            )
+
+        await Tweet.findByIdAndUpdate(checkLiked._id, {
+            $addToSet: { likes: loggedUser.id } },
             { new: true }
             )
 

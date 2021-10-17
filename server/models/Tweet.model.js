@@ -15,7 +15,10 @@ const tweetSchema = new Schema(
              ref: 'Tweet',
              type: [Schema.Types.ObjectId],
              default: []
-         }
+         },
+         likes: {
+             type: [String],
+         },
     },
     {
        timestamps: true,
