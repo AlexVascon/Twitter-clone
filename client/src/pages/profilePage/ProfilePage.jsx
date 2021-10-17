@@ -157,10 +157,8 @@ export default function ProfilePage() {
                   </TabList>
                 </Box>
                 <TabPanel value="1">
-                {user 
-                && user.tweets.map((tweet) => {
-                    console.log('tweet loop', tweet);
-                    return (<Tweet tweet={tweet} />)
+                {user.tweets.map((tweet) => {
+                    return <Tweet tweetId={tweet.id} />
                 })}
                 </TabPanel>
                 <TabPanel value="2">

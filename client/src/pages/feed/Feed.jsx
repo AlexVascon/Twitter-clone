@@ -264,7 +264,7 @@ export default function Feed() {
         {followingTweets &&
           followingTweets.map((tweet) => {
             return (
-             <Tweet tweet={tweet} />
+             <Tweet tweetId={tweet.id} />
             );
           })}
       </div>

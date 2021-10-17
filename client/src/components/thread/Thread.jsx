@@ -16,7 +16,6 @@ import GifOutlinedIcon from "@mui/icons-material/GifOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
 import Divider from "@mui/material/Divider";
-import { useHistory } from "react-router-dom";
 import Tweet from '../tweet/Tweet';
 
 
@@ -25,9 +24,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function Thread(props) {
-  const { tweet } = props;
-
-  const history = useHistory();
 
   const [user, setUser] = useState("");
   const [openComments, setOpenComments] = useState(false);
@@ -35,9 +31,19 @@ export default function Thread(props) {
   const [openReply, setOpenReply] = useState(false);
   const [tweetDescription, setTweetDescription] = useState("");
   const [replyTweet, setReplyTweet] = useState('');
+  const [tweet, setTweet] = useState('');
 
 
   const handleReplyDescription = (e) => setTweetDescription(e.target.value);
+
+  const getTweet = async () => {
+    try{
+        const res = await authAxios.get(`tweet/${props?.tweetId}`)
+        setTweet(res?.data?.tweet);
+    } catch (err) {
+        console.error(err);
+    }
+}
 
   useEffect(() => {
     const getLoggedDetails = async () => {
@@ -55,6 +61,7 @@ export default function Thread(props) {
     try {
       const data = { tweetId };
       await authAxios.post("user/like/tweet", data);
+      getTweet();
     } catch (err) {
       console.error(err);
     }
@@ -92,15 +99,23 @@ export default function Thread(props) {
 
     try {
       const tweetData = { tweetDescription, replyTweet };
-      await authAxios.post("tweet/comment", tweetData);
-      history.push("/feed");
+      const res = await authAxios.post("tweet/comment", tweetData);
+      setComments([...comments, res?.data?.comment ]);
+      setOpenReply(false);
     } catch (err) {
       console.error(err);
     }
   };
 
+  useEffect(() => {
+    getTweet();
+    getTweetComments();
+}, [])
+
   return (
     <>
+    {tweet 
+    && 
       <div className="tweet-container">
         <div
           className="top-half-tweet"
@@ -124,6 +139,7 @@ export default function Thread(props) {
           <ShareOutlinedIcon />
         </div>
       </div>
+    }
       <Dialog
         fullScreen
         open={openComments}
@@ -170,7 +186,7 @@ export default function Thread(props) {
           comments.map((comment) => {
             return (
               <>
-              <Tweet tweet={comment} />
+              <Tweet tweetId={comment.id} />
               </>
             );
           })}

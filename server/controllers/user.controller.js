@@ -103,7 +103,7 @@ exports.like_tweet = async (req, res) => {
 
         const loggedUser = await User.findById(req.payload._id);
 
-        const checkLiked = await Tweet.findById(tweetId);
+        const checkLiked = await Tweet.findById(tweetId).populate('creator');
 
         if(loggedUser.likes.includes(checkLiked.id)){
             await User.findByIdAndUpdate(req.payload._id, {
@@ -128,7 +128,9 @@ exports.like_tweet = async (req, res) => {
             { new: true }
             )
 
-        res.status(200).json({ message: 'liked post succesfully'});
+            const { likes } = checkLiked;
+
+            res.status(200).json({ likes: likes });
         
     } catch (err) {
         console.error(err);

@@ -9,6 +9,6 @@ router.post('/create', TweetController.create_tweet);
 
 router.post('/comment', TweetController.comment);
 
-
+router.get('/:tweetId', TweetController.tweet);
 
 module.exports = router;

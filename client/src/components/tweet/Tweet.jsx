@@ -16,7 +16,6 @@ import GifOutlinedIcon from "@mui/icons-material/GifOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
 import Divider from "@mui/material/Divider";
-import { useHistory } from "react-router-dom";
 import Thread from '../thread/Thread';
 
 
@@ -26,19 +25,25 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function Tweet(props) {
 
-  const { tweet } = props;
-
-  const history = useHistory();
-
   const [user, setUser] = useState("");
   const [openComments, setOpenComments] = useState(false);
   const [comments, setComments] = useState([]);
   const [openReply, setOpenReply] = useState(false);
   const [tweetDescription, setTweetDescription] = useState("");
   const [replyTweet, setReplyTweet] = useState('');
-
+  const [tweet, setTweet] = useState('');
 
   const handleReplyDescription = (e) => setTweetDescription(e.target.value);
+
+  const getTweet = async () => {
+    try{
+        const res = await authAxios.get(`tweet/${props?.tweetId}`)
+        setTweet(res?.data?.tweet);
+    } catch (err) {
+        console.error(err);
+    }
+}
+  
 
   useEffect(() => {
     const getLoggedDetails = async () => {
@@ -56,6 +61,7 @@ export default function Tweet(props) {
     try {
       const data = { tweetId };
       await authAxios.post("user/like/tweet", data);
+      getTweet();
     } catch (err) {
       console.error(err);
     }
@@ -75,7 +81,7 @@ export default function Tweet(props) {
     }
   };
 
-  const handleCommentsExpand = () => {
+  const handleCommentsExpand = (tweet) => {
     getTweetComments(tweet.id);
     setOpenComments(true);
   };
@@ -93,15 +99,23 @@ export default function Tweet(props) {
 
     try {
       const tweetData = { tweetDescription, replyTweet };
-      await authAxios.post("tweet/comment", tweetData);
-      history.push("/feed");
+      const res = await authAxios.post("tweet/comment", tweetData);
+      setComments([...comments, res?.data?.comment ]);
+      setOpenReply(false);
     } catch (err) {
       console.error(err);
     }
   };
+  
+  useEffect(() => {
+      getTweet();
+      getTweetComments();
+  }, [])
 
   return (
     <>
+    {tweet 
+    &&
       <div className="tweet-container">
         <div
           className="top-half-tweet"
@@ -124,7 +138,8 @@ export default function Tweet(props) {
           <span className='like-count' >{tweet.likes.length}</span>
           <ShareOutlinedIcon />
         </div>
-      </div>
+      </div> 
+      }
       <Dialog
         fullScreen
         open={openComments}
@@ -171,7 +186,7 @@ export default function Tweet(props) {
           comments.map((comment) => {
             return (
               <>
-              <Thread tweet={comment} />
+              <Thread tweetId={comment.id} />
               </>
             );
           })}
