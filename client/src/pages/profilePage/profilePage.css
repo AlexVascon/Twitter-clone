@@ -32,7 +32,6 @@
 }
 
 .backdrop-container {
-    border: 1px solid grey;
     position: absolute;
     width: 100%;
     top: 7.3%;
@@ -52,6 +51,10 @@
     margin-left: 5%;
     display: flex;
     flex-direction: column;
+}
+
+.profile-avatar {
+    border: 3px solid white;
 }
 
 .avatar-container h1 {
@@ -104,7 +107,7 @@
     justify-content: space-between;
 }
 
-.top-middle-tweet {
+.top-middle-tweet-profile {
     display: flex;
     flex-direction: column;
     text-align: left;

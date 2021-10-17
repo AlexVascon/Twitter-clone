@@ -28,8 +28,6 @@ export default function Tweet(props) {
 
   const { tweet } = props;
 
-  console.log('tweet:', tweet);
-
   const history = useHistory();
 
   const [user, setUser] = useState("");

@@ -25,6 +25,7 @@ import CropOriginalIcon from '@mui/icons-material/CropOriginal';
 import GifOutlinedIcon from '@mui/icons-material/GifOutlined';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
+import Tweet from '../../components/tweet/Tweet';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -51,6 +52,7 @@ export default function ProfilePage() {
     const getLoggedDetails = async () => {
       try {
         const loggedUserDetails = await authAxios.get("profile/details");
+        console.log('user tweets:', loggedUserDetails.data);
         setUser(loggedUserDetails?.data?.user);
       } catch (err) {
         console.error(err);
@@ -85,7 +87,7 @@ export default function ProfilePage() {
       try {
           const res = await authAxios.get('profile/liked/tweets');
           setLikedTweets(res?.data?.likedTweets);
-          
+
       } catch (err) {
           console.error(err);
       }
@@ -117,6 +119,7 @@ export default function ProfilePage() {
           <section className="profile-data-top">
             <div className="avatar-container">
               <Avatar
+              className='profile-avatar'
                 src={user.profilePicture}
                 sx={{ width: 100, height: 100 }}
               />
@@ -154,26 +157,10 @@ export default function ProfilePage() {
                   </TabList>
                 </Box>
                 <TabPanel value="1">
-                {user.tweets.map((tweet) => {
-                    return (<div className="tweet-container">
-                    <div className="top-half-tweet">
-                      <Avatar
-                        src={user.profilePicture}
-                        sx={{ width: 50, height: 50 }}
-                      />
-                      <div className="top-middle-tweet">
-                        <h4 className='tweet-creator-name'>{user.name}</h4>
-                        <p className='tweet-description'>{tweet.description}</p>
-                      </div>
-                      <MoreHorizIcon className='tweet-option-icon' />
-                    </div>
-                    <div className='bottom-half-tweet'>
-                        <ChatBubbleOutlineRoundedIcon />
-                        <RepeatRoundedIcon />
-                        <FavoriteBorderRoundedIcon />
-                        <ShareOutlinedIcon />
-                    </div>
-                  </div>)
+                {user 
+                && user.tweets.map((tweet) => {
+                    console.log('tweet loop', tweet);
+                    return (<Tweet tweet={tweet} />)
                 })}
                 </TabPanel>
                 <TabPanel value="2">

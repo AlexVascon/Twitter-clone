@@ -65,10 +65,23 @@ exports.profile_edit = async (req, res) => {
 
 exports.profile_details = async (req, res) => {
     try {
-        const loggedUser = await User.findById(req.payload._id).populate('tweets');
+        const loggedUser = await User.findById(req.payload._id)
+        .populate({
+            path: 'tweets',
+            populate: {
+                path: 'creator',
+                model: 'User'
+            }
+        });
+
+        const tweets = loggedUser.tweets.map(tweet => {
+            const { _id, name, profilePicture } = tweet.creator;
+            const { description, createdAt, likes, id, comments } = tweet;
+            return { description, createdAt, _id, name, profilePicture, likes, id, comments };
+        })
 
         // omit password
-        const { _id, email, name, profilePicture, coverPicture, followers, following, bio, location, website, tweets } = loggedUser;
+        const { _id, email, name, profilePicture, coverPicture, followers, following, bio, location, website} = loggedUser;
         const loggedUserDetails = { _id, email, name, profilePicture, coverPicture, followers, following, bio, location, website, tweets };
 
         res.status(200).json({ user: loggedUserDetails});
@@ -93,8 +106,8 @@ exports.get_liked_tweets = async (req, res) => {
         // omit sensitive data and only return public tweet data 
         const getLikedTweets = await loggedUser.likes.map(tweet => {
             const { _id, name, profilePicture } = tweet.creator;
-            const { description, createdAt } = tweet;
-            return { description, createdAt, _id, name, profilePicture };
+            const { description, createdAt, likes, id } = tweet;
+            return { description, createdAt, _id, name, profilePicture, likes, id };
         })
 
         res.status(200).json({ likedTweets: getLikedTweets });
