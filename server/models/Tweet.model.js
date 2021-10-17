@@ -11,6 +11,11 @@ const tweetSchema = new Schema(
         description: {
              type: String
          },
+         comments: {
+             ref: 'Tweet',
+             type: [Schema.Types.ObjectId],
+             default: []
+         }
     },
     {
        timestamps: true,

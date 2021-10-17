@@ -90,3 +90,46 @@
     padding-left: .7em;
     padding-top: .7em;
 }
+
+.tweet-expand-container {
+    border-bottom: 1px solid grey;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+}
+
+.top-half-tweet {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 .5em;
+}
+
+.top-middle-tweet {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    position: absolute;
+    left: 22%;
+}
+
+.top-middle-tweet-expanded {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    position: absolute;
+    left: 20%;
+}
+
+.reply-container {
+    padding-bottom: 1em;
+    margin-bottom: 3em;
+}
+
+.send-reply-container {
+    display: flex;
+    align-items: center;
+    padding-bottom: 1em;
+}

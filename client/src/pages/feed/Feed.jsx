@@ -16,13 +16,9 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import Slide from "@mui/material/Slide";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
-import RepeatRoundedIcon from "@mui/icons-material/RepeatRounded";
-import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import { useHistory } from "react-router-dom";
+import Tweet from '../../components/tweet/Tweet';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -176,15 +172,6 @@ export default function Feed() {
     getFollowingTweets();
   }, []);
 
-  const likedTweet = async (tweetId) => {
-    try {
-      const data = { tweetId };
-      await authAxios.post("user/like/tweet", data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
     <div>
       <div className="feed-header">
@@ -277,27 +264,7 @@ export default function Feed() {
         {followingTweets &&
           followingTweets.map((tweet) => {
             return (
-              <div className="tweet-container">
-                <div className="top-half-tweet">
-                  <Avatar
-                    src={tweet.profilePicture}
-                    sx={{ width: 50, height: 50 }}
-                  />
-                  <div className="top-middle-tweet">
-                    <h4 className="tweet-creator-name">{tweet.name}</h4>
-                    <p className="tweet-description">{tweet.description}</p>
-                  </div>
-                  <MoreHorizIcon className="tweet-option-icon" />
-                </div>
-                <div className="bottom-half-tweet">
-                  <ChatBubbleOutlineRoundedIcon />
-                  <RepeatRoundedIcon />
-                  <FavoriteBorderRoundedIcon
-                    onClick={() => likedTweet(tweet.tweetId)}
-                  />
-                  <ShareOutlinedIcon />
-                </div>
-              </div>
+             <Tweet tweet={tweet} />
             );
           })}
       </div>
