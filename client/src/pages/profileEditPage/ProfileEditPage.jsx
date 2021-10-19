@@ -104,22 +104,29 @@ export default function ProfileEditPage() {
         </div>
         <div className='backdrop-upload-image-container' style={{ backgroundImage: `url(${coverPicture})`}}>
         <label className='' htmlFor="icon-button-file">
-            <Input accept="image/*" id="icon-button-file" type="file" onChange={handleBackdropUpload}/>
+        <Input accept="image/*" id="icon-button-file" type="file" onChange={handleBackdropUpload}/>
             <IconButton aria-label="upload picture" component="span">
                 <PhotoCamera />
             </IconButton>
         </label>
         </div>
         <div className='profile-image-upload-container'>
-           <Avatar src={profilePicture} sx={{ width: 80, height: 80 }}>
-           <label className='test' htmlFor="file">
-            <input className='profileImg' 
-            style={{display: 'none'}} 
-            type="file" id='file' 
-            accept='.png, .jpeg, .jpg' 
-            onChange={handleUpload} />
+        <div className='profile-image' style={{ backgroundImage: `url(${profilePicture})`}}>
+        <label className='test' htmlFor="icon-button-profile">
+            <Input accept="image/*" id="icon-button-profile" type="file" onChange={handleUpload}/>
+            <IconButton aria-label="upload picture" component="span">
+                <PhotoCamera />
+            </IconButton>
            </label>
-           </Avatar>
+        </div>
+           {/* <Avatar className='profile-image' src={profilePicture} sx={{ width: 80, height: 80 }}>
+           <label className='test' htmlFor="icon-button-profile">
+            <Input accept="image/*" id="icon-button-profile" type="file" onChange={handleUpload}/>
+            <IconButton aria-label="upload picture" component="span">
+                <PhotoCamera />
+            </IconButton>
+           </label>
+           </Avatar> */}
         </div>
         <div className='multi-text-form'>
         <TextField

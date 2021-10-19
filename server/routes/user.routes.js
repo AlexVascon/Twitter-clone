@@ -2,7 +2,11 @@ const express = require("express");
 const router = express.Router();
 const UserController = require('../controllers/user.controller');
 
+router.get('/following/tweets/limit/five', UserController.following_limit);
+
 router.get('/following/tweets', UserController.following_tweets);
+
+router.get('/non/following/limit/three', UserController.users_limit);
 
 router.post('/like/tweet', UserController.like_tweet);
 

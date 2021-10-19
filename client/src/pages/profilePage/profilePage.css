@@ -200,6 +200,16 @@
 
 }
 
+.show-more {
+    position: absolute;
+    border: none;
+    color: rgb(79, 185, 255);
+    text-align: left;
+    left: 5%;
+    background: none;
+    padding-bottom: 1em;
+}
+
 
 
 

@@ -126,6 +126,14 @@ export default function Feed() {
     getLoggedDetails();
   }, []);
 
+  const getThree = async () => {
+    try {
+        await authAxios.get('user/non/following/limit/three');
+    } catch (err) {
+
+    }
+}
+
   useEffect(() => {
     const getUsersNotFollowing = async () => {
       try {
@@ -145,7 +153,10 @@ export default function Feed() {
       }
     };
     getUsersNotFollowing();
+    getThree();
   }, []);
+
+  
 
   const followUser = async (userId) => {
     try {
@@ -158,7 +169,7 @@ export default function Feed() {
 
   const getFollowingTweets = async () => {
     try {
-      const res = await authAxios.get("user/following/tweets");
+      const res = await authAxios.get("user/following/tweets/limit/five");
       setFollowingTweets(res?.data?.followingTweets);
     } catch (err) {
       console.error(err);
@@ -264,7 +275,7 @@ export default function Feed() {
         {followingTweets &&
           followingTweets.map((tweet) => {
             return (
-             <Tweet tweetId={tweet.id} />
+             <Tweet key={tweet.id} tweetId={tweet.id} />
             );
           })}
       </div>

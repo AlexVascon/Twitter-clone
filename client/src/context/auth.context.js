@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from '../service/api';
 import { useHistory } from "react-router-dom";
 
-
 const AuthContext = React.createContext();
 
 function AuthProviderWrapper(props) {
@@ -15,13 +14,13 @@ function AuthProviderWrapper(props) {
 
   const verifyStoredToken = async () => {
       try {
+        setUser(null);
         const storedToken = localStorage.getItem('authToken');
         if(storedToken) {
             const res = await axios.get('auth/verify', { headers: { Authorization: `Bearer ${storedToken}`} });
             const user = res.data;
             setUser(user);
             setIsLoggedIn(true);
-            history.push('/profile');
             setIsLoading(false);
         } else {
             setIsLoggedIn(false);
@@ -33,18 +32,23 @@ function AuthProviderWrapper(props) {
       }
   }
   
-  const logInUser = (token) => {                              
-    localStorage.setItem('authToken', token);
+  const logInUser = async (token) => {    
+    try {
+      localStorage.setItem('authToken', token); 
+      await verifyStoredToken();  
+    } catch (err) {
+      console.error(err);
+    }                           
   }
 
   const logOutUser = () => {
-    localStorage.removeItem("authToken");
-    setIsLoggedIn(false);
-    setUser(null);
+      setUser(null);
+      setIsLoggedIn(false);
+      localStorage.removeItem("authToken");
   }
 
   useEffect(() => {                                    
-    verifyStoredToken();                  
+    verifyStoredToken();             
    }, []);
 
   return (

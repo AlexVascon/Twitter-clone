@@ -16,3 +16,11 @@
     position: absolute;
     left: 20%;
 }
+
+.show-more-comments {
+    border: none;
+    background:none;
+    text-align: left;
+    padding-bottom: 1em;
+    color: rgb(53, 173, 253);
+}

@@ -15,4 +15,6 @@ router.post('/edit', ProfileController.profile_edit);
 router.get('/details', ProfileController.profile_details);
 
 
+
+
 module.exports = router;

@@ -23,12 +23,8 @@ export default function LoginPage() {
       try {
         const requestBody = { email, password };
         const res = await axios.post('auth/login', requestBody)
-        
-        const token = await res.data?.authToken;    
-
-        history.push('/profile');           
+        const token = await res.data?.authToken;      
         await logInUser(token);  
-
       } catch (error) {
         console.error(error);
       }

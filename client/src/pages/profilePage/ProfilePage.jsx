@@ -41,6 +41,7 @@ export default function ProfilePage() {
   const [open, setOpen] = React.useState(false);
   const [likedTweets, setLikedTweets] = useState(null);
   const [tweetDescription, setTweetDescription] = useState('');
+  const [tweets, setTweets] = useState([]);
 
   const handleTweetDescription = e => setTweetDescription(e.target.value);
 
@@ -48,18 +49,19 @@ export default function ProfilePage() {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    const getLoggedDetails = async () => {
-      try {
-        const loggedUserDetails = await authAxios.get("profile/details");
-        console.log('user tweets:', loggedUserDetails.data);
-        setUser(loggedUserDetails?.data?.user);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+  const getLoggedDetails = async () => {
+    try {
+      const loggedUserDetails = await authAxios.get("profile/details");
+      setUser(loggedUserDetails?.data?.user);
+      await getProfileTweets();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  if(user === null) {
     getLoggedDetails();
-  }, []);
+  }
 
   const createTweetPrompt = () => {
         setOpen(true);
@@ -93,8 +95,29 @@ export default function ProfilePage() {
       }
   }
 
+  const getProfileTweets = async () => {
+      try {
+          const index = tweets?.length || 0
+          const res = await authAxios.get(`tweet/logged/${index}`)
+          setTweets(res?.data?.tweets);
+      } catch (err) {
+          console.error(err);
+      }
+  }
+
+  const showMoreTweets = async () => {
+      try {
+        const index = tweets?.length || 0
+        const res = await authAxios.get(`tweet/logged/${index}`)
+        setTweets(res?.data?.tweets);
+      } catch (err) {
+          console.error(err);
+      }
+  }
+
   useEffect(() => {
     getLikedTweets();
+    // getProfileTweets();
   }, [])
 
   return (
@@ -157,9 +180,11 @@ export default function ProfilePage() {
                   </TabList>
                 </Box>
                 <TabPanel value="1">
-                {user.tweets.map((tweet) => {
-                    return <Tweet tweetId={tweet.id} />
+                {tweets?.length > 0
+                && tweets.map((tweet) => {
+                    return <Tweet key={tweet._id} tweetId={tweet._id} />
                 })}
+                {tweets && <button className='show-more' onClick={() => showMoreTweets()}>Show more</button>}
                 </TabPanel>
                 <TabPanel value="2">
                 {likedTweets ? likedTweets.map((tweet) => {

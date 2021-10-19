@@ -17,6 +17,7 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
 import Divider from "@mui/material/Divider";
 import Tweet from '../tweet/Tweet';
+import moment from "moment";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -32,6 +33,8 @@ export default function Thread(props) {
   const [tweetDescription, setTweetDescription] = useState("");
   const [replyTweet, setReplyTweet] = useState('');
   const [tweet, setTweet] = useState('');
+  const [index, setIndex] = useState(0);
+  const [expand, setExpand] = useState(false);
 
 
   const handleReplyDescription = (e) => setTweetDescription(e.target.value);
@@ -74,15 +77,16 @@ export default function Thread(props) {
 
   const getTweetComments = async (tweetId) => {
     try {
-      const res = await authAxios.get(`tweet/comments/${tweetId}`);
+      const res = await authAxios.get(`tweet/comments/${tweetId}/${index}`);
       setComments(res?.data?.comments);
+      setIndex(comments?.length);
     } catch (err) {
       console.error(err);
     }
   };
 
   const handleCommentsExpand = () => {
-    getTweetComments(tweet.id);
+    getTweetComments(tweet._id);
     setOpenComments(true);
   };
 
@@ -108,9 +112,20 @@ export default function Thread(props) {
     }
   };
 
+  const showMoreComments = async () => {
+    try {
+      const tweetId = tweet?._id;
+      const newIndex = comments.length;
+      const res = await authAxios.get(`tweet/comments/${tweetId}/${newIndex}`);
+      setComments(res?.data?.comments);
+      getTweet();
+    } catch (err) {
+        console.error(err)
+   }
+}
+
   useEffect(() => {
     getTweet();
-    getTweetComments();
 }, [])
 
   return (
@@ -135,7 +150,7 @@ export default function Thread(props) {
           />
            <span className='reply-count' >{tweet.comments.length}</span>
           <RepeatRoundedIcon />
-          <FavoriteBorderRoundedIcon onClick={() => likedTweet(tweet.id)} />
+          <FavoriteBorderRoundedIcon onClick={() => likedTweet(tweet._id)} />
           <span className='like-count' >{tweet.likes.length}</span>
           <ShareOutlinedIcon />
         </div>
@@ -171,13 +186,17 @@ export default function Thread(props) {
               </div>
               <MoreHorizIcon className="tweet-option-icon" />
             </div>
+            <div>
+            <p>{moment(tweet.createdAt).format("hh:mm • MMM DD, YYYY")}</p>
+            </div>
+            <Divider />
             <div className="bottom-half-tweet">
               <ChatBubbleOutlineRoundedIcon
                 onClick={() => replyTweetPrompt(tweet)}
               />
               <span className='reply-count' >{tweet.comments.length}</span>
               <RepeatRoundedIcon />
-              <FavoriteBorderRoundedIcon onClick={() => likedTweet(tweet.id)} />
+              <FavoriteBorderRoundedIcon onClick={() => likedTweet(tweet._id)} />
               <span className='like-count' >{tweet.likes.length}</span>
               <ShareOutlinedIcon />
             </div>
@@ -187,10 +206,11 @@ export default function Thread(props) {
           comments.map((comment) => {
             return (
               <>
-              <Tweet tweetId={comment.id} />
+              <Tweet key={comment._id.toString()} tweetId={comment._id} />
               </>
             );
           })}
+        {comments && <button onClick={() => showMoreComments()}>Show more</button>}
       </Dialog>
       <Dialog
         fullScreen
