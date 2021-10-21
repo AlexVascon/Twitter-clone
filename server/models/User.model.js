@@ -63,7 +63,12 @@ const userSchema = new Schema(
     tweets: {
       ref: 'Tweet',
       type: [Schema.Types.ObjectId],
-      default: []
+      default: [],
+    },
+    retweets: {
+      ref: 'Tweet',
+      type: [Schema.Types.ObjectId],
+      default: [],
     },
     likes: {
       ref: 'Tweet',

@@ -142,7 +142,7 @@ exports.login = async (req, res, next) => {
 
          // Compare the provided password with the one saved in the database
          const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
-   
+         
          if (passwordCorrect) {
            // Deconstruct the user object to omit the password
            const { _id, email, name, profilePicture, coverPicture, followers, following, bio, location, website } = foundUser;
@@ -156,6 +156,8 @@ exports.login = async (req, res, next) => {
              process.env.TOKEN_SECRET,
              { algorithm: 'HS256', expiresIn: "6h" }
            );
+
+           
     
            // Send the token as the response
            res.status(200).json({ authToken: authToken });

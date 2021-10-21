@@ -175,11 +175,22 @@
 
 .tweet-avatar {
     margin-left: .5em;
+    align-self: flex-start;
 }
 
 .tweet-form {
     margin-left: .7em;
-    
+    display: flex;
+    flex-direction: column;
+}
+
+.tweet-image {
+    margin-top: 3em;
+    width: 80%;
+    height: 30%;
+    border-radius: 1em;
+    align-self: center;
+
 }
 
 .tweet-form input {

@@ -169,15 +169,29 @@ export default function Feed() {
 
   const getFollowingTweets = async () => {
     try {
-      const res = await authAxios.get("user/following/tweets/limit/five");
+      const index = followingTweets?.length || 0
+      const res = await authAxios.get(`tweet/following/${index}`);
       setFollowingTweets(res?.data?.followingTweets);
     } catch (err) {
-      console.error(err);
-      setFollowingTweetsError(err.message);
+      if(err.response) {
+        setFollowingTweetsError(err.response.data.message);
+      }
+      console.error(err.response);
+      
     } finally {
       setPendingFollowingTweets(false);
     }
   };
+
+  const showMoreTweets = async () => {
+    try {
+      const index = followingTweets?.length 
+      const res = await authAxios.get(`tweet/following/${index}`);
+      setFollowingTweets(res?.data?.followingTweets);
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   useEffect(() => {
     getFollowingTweets();
@@ -278,6 +292,7 @@ export default function Feed() {
              <Tweet key={tweet.id} tweetId={tweet.id} />
             );
           })}
+          {followingTweets && <button className='show-more' onClick={() => showMoreTweets()}>Show more</button>}
       </div>
     </div>
   );

@@ -16,6 +16,8 @@ router.post('/follow', UserController.follow_user);
 
 router.get('/all', UserController.get_all_users);
 
+router.get('/visit/details/:userId', UserController.user_details);
+
 
 
 

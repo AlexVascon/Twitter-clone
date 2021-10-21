@@ -17,6 +17,7 @@ export default function SignupPage() {
     const [birthday, setBirthday] = useState('');
     const [verifyToken, setVerifyToken] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordError, setPasswordError] = useState('');
 
     const handleNameChange = e => setName(e.target.value);
     const handleEmailChange = e => {
@@ -70,6 +71,8 @@ export default function SignupPage() {
             case 3: 
                 return ( <SignupStepThree
                 password={password}
+                passwordError={passwordError}
+                setPasswordErrot={setPasswordError}
                 handlePasswordChange={handlePasswordChange}
                 nextStep={nextStep}
                  /> )

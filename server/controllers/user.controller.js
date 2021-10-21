@@ -83,8 +83,8 @@ exports.following_tweets = async (req, res) => {
             const { _id, name, profilePicture } = following;
 
             return following.tweets.map(tweet => {
-                const { description , createdAt, id, likes, comments } = tweet;
-                return { _id, name, profilePicture, description, createdAt, id, likes, comments };
+                const { description , createdAt, id, likes, comments, image} = tweet;
+                return { _id, name, profilePicture, description, createdAt, id, likes, comments, image };
             })
         })
         .flat();
@@ -107,11 +107,11 @@ exports.like_tweet = async (req, res) => {
 
         if(loggedUser.likes.includes(checkLiked.id)){
             await User.findByIdAndUpdate(req.payload._id, {
-                $pull: { likes: checkLiked.id } },
+                $pull: { likes: checkLiked._id } },
                 { new: true }
             );
             await Tweet.findByIdAndUpdate(checkLiked.id, {
-                $pull: { likes: loggedUser.id } },
+                $pull: { likes: loggedUser._id } },
                 { new: true }
                 )
             res.status(200).json({ message: 'removed like'});
@@ -119,12 +119,12 @@ exports.like_tweet = async (req, res) => {
         }
 
         await User.findByIdAndUpdate(req.payload._id, {
-            $addToSet: { likes: checkLiked.id } }, 
+            $addToSet: { likes: checkLiked._id } }, 
             { new: true }
             )
 
         await Tweet.findByIdAndUpdate(checkLiked.id, {
-            $addToSet: { likes: loggedUser.id } },
+            $addToSet: { likes: loggedUser._id } },
             { new: true }
             )
 
@@ -140,6 +140,7 @@ exports.like_tweet = async (req, res) => {
 
 exports.users_limit = async (req, res) => {
     try {
+        
         const limitThree = await User.find().limit(4);
 
         const loggedUser = await User.findById(req.payload._id);
@@ -147,6 +148,10 @@ exports.users_limit = async (req, res) => {
         const filterLoggedUser = limitThree.filter(user => {
             return (user.id !== req.payload._id) && !loggedUser.following.includes(user._id);
         })
+
+        if(filterLoggedUser.length === 3) filterLoggedUser.pop();
+
+        res.status(200).json({ users: filterLoggedUser })
 
     } catch (err) {
         console.error(err)
@@ -156,28 +161,35 @@ exports.users_limit = async (req, res) => {
 
 exports.following_limit = async (req, res) => {
     try {
+
+        const { index } = req.body;
+
+        let amount = 5;
+        if(index !== '0') amount += Number(index);
+
         const limitFive = await User.findById(req.payload._id)
         .populate({
             path: 'following',
             options: {
-                limit: 5,
+                limit: amount,
+                skip: index
             },
             populate: {
                 path: 'tweets',
                 model: 'Tweet',
                 options: {
-                    limit: 5,
+                    limit: amount,
+                    skip: index
                 },
             }
         });
 
         const followingList = limitFive.following;
 
-        if(!followingList.length) return res.status(400).json({ message: 'No followers yet'});
+        if(followingList.length === 0) return res.status(400).json({ message: 'No followers yet'});
 
         const followingTweets = followingList.map(following => {
             const { _id, name, profilePicture } = following;
-
             return following.tweets.map(tweet => {
                 const { description , createdAt, id, likes, comments } = tweet;
                 return { _id, name, profilePicture, description, createdAt, id, likes, comments };
@@ -191,5 +203,21 @@ exports.following_limit = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Something went wrong ' + err});
+    }
+}
+
+exports.user_details = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const user = await User.findById(userId)
+
+        // omit password
+        const { _id, email, name, profilePicture, coverPicture, followers, following, bio, location, website, tweets} = user;
+        const userDetails = { _id, email, name, profilePicture, coverPicture, followers, following, bio, location, website, tweets };
+
+        res.status(200).json({ user: userDetails});
+    } catch (err) {
+
     }
 }

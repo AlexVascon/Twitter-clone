@@ -8,6 +8,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import moment from "moment";
+import { styled } from '@mui/material/styles';
 import authAxios from "../../service/authApi";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -28,6 +29,7 @@ import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
 import Tweet from '../../components/tweet/Tweet';
 
 
+
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
@@ -42,8 +44,13 @@ export default function ProfilePage() {
   const [likedTweets, setLikedTweets] = useState(null);
   const [tweetDescription, setTweetDescription] = useState('');
   const [tweets, setTweets] = useState([]);
+  const [tweetImage, setTweetImage] = useState('');
 
   const handleTweetDescription = e => setTweetDescription(e.target.value);
+
+  const Input = styled('input')({
+    display: 'none',
+  });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -75,7 +82,7 @@ export default function ProfilePage() {
       e.preventDefault();
 
       try{
-          const tweetData = { tweetDescription }
+          const tweetData = { tweetDescription, tweetImage }
           await authAxios.post('tweet/create', tweetData);
 
           history.push('/profile');
@@ -89,7 +96,6 @@ export default function ProfilePage() {
       try {
           const res = await authAxios.get('profile/liked/tweets');
           setLikedTweets(res?.data?.likedTweets);
-
       } catch (err) {
           console.error(err);
       }
@@ -115,9 +121,21 @@ export default function ProfilePage() {
       }
   }
 
+  const handleTweetImageUpload = async (e) => {
+    e.preventDefault();
+    try{
+      const uploadData = new FormData();
+      uploadData.append('tweetImage', e.target.files[0]);
+      const res = await authAxios.post('upload/tweet/image', uploadData);
+      setTweetImage(res?.data?.secure_url);
+    } catch (err) {
+
+    }
+  }
+
   useEffect(() => {
     getLikedTweets();
-    // getProfileTweets();
+    console.log('liked tweets:', likedTweets);
   }, [])
 
   return (
@@ -173,10 +191,10 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     aria-label="lab API tabs example"
                   >
-                    <Tab label="Tweets" value="1" />
-                    <Tab label="Tweets and replies" value="2" />
-                    <Tab label="Media" value="3" />
-                    <Tab label="Likes" value="4" />
+                    <Tab sx={{ width: 15 }} label="Tweets" value="1" />
+                    <Tab sx={{ width: 15 }} label="Tweets and replies" value="2" />
+                    <Tab sx={{ width: 15 }} label="Media" value="3" />
+                    <Tab sx={{ width: 15 }} label="Likes" value="4" onClick={() => getLikedTweets()} />
                   </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -187,29 +205,15 @@ export default function ProfilePage() {
                 {tweets && <button className='show-more' onClick={() => showMoreTweets()}>Show more</button>}
                 </TabPanel>
                 <TabPanel value="2">
-                {likedTweets ? likedTweets.map((tweet) => {
-                    return (<div className="tweet-container">
-                    <div className="top-half-tweet">
-                      <Avatar
-                        src={tweet.profilePicture}
-                        sx={{ width: 50, height: 50 }}
-                      />
-                      <div className="top-middle-tweet">
-                        <h4 className='tweet-creator-name'>{tweet.name} <span className='tweet-date'> • {moment(tweet.createdAt).format("MMM D")}</span> </h4>
-                        <p className='tweet-description'>{tweet.description}</p>
-                      </div>
-                      <MoreHorizIcon className='tweet-option-icon' />
-                    </div>
-                    <div className='bottom-half-tweet'>
-                        <ChatBubbleOutlineRoundedIcon />
-                        <RepeatRoundedIcon />
-                        <FavoriteBorderRoundedIcon />
-                        <ShareOutlinedIcon />
-                    </div>
-                  </div>)
-                }): 'loading...' }</TabPanel>
+                </TabPanel>
                 <TabPanel value="3">Item Three</TabPanel>
-                <TabPanel value="4">Item Four</TabPanel>
+                <TabPanel value="4">
+                {likedTweets 
+                && likedTweets.map((tweet) => {
+                    return <Tweet key={tweet._id} tweetId={tweet._id} />
+                })} 
+                {likedTweets && <button className='show-more' onClick={() => showMoreTweets()}>Show more</button>}
+                </TabPanel>
               </TabContext>
             </Box>
           </section>
@@ -234,6 +238,8 @@ export default function ProfilePage() {
             <Avatar className='tweet-avatar' src={user.profilePicture}/>
             <form className='tweet-form' onSubmit={handleTweetSubmit}>
             <input type="text" placeholder="What's happening?" value={tweetDescription} maxlength='240' onChange={handleTweetDescription}/>
+            {tweetImage 
+            && <img className='tweet-image' src={tweetImage} alt="" /> }
             <button className='tweet-submit' type='submit'>Tweet</button>
             </form>
             </div>
@@ -244,7 +250,12 @@ export default function ProfilePage() {
             </div>
           <Divider />
           <div className='input-options'>
-          <CropOriginalIcon />
+          <label className='' htmlFor="icon-button-crop">
+        <Input accept="image/*" id="icon-button-crop" type="file" onChange={handleTweetImageUpload}/>
+            <IconButton aria-label="upload picture" component="span">
+            <CropOriginalIcon />
+            </IconButton>
+          </label>
           <GifOutlinedIcon />
           <BarChartOutlinedIcon />
           <DateRangeOutlinedIcon />

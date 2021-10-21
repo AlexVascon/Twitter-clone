@@ -32,6 +32,12 @@ app.use('/tweet', isAuthenticated, tweetRoutes);
 const userRoutes = require('./routes/user.routes');
 app.use('/user', isAuthenticated, userRoutes);
 
+const uploadRoutes = require('./routes/upload.routes');
+app.use('/upload', isAuthenticated, uploadRoutes);
+
+const followRoutes = require('./routes/follow.routes');
+app.use('/follow', isAuthenticated, followRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 

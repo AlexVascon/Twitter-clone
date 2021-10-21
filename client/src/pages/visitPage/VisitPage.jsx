@@ -139,7 +139,6 @@ export default function VisitPage() {
   useEffect(() => {
     getLikedTweets();
     followStatus();
-    // getProfileTweets();
   }, [])
 
   return (

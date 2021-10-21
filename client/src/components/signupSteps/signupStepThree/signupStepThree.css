@@ -30,3 +30,9 @@
     font-weight: 600;
     font-size: 1.2em;
 }
+
+.error-message {
+    color: red;
+    position: absolute;
+    top: 25%;
+}

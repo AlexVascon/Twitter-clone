@@ -92,9 +92,9 @@ exports.get_liked_tweets = async (req, res) => {
 
         // omit sensitive data and only return public tweet data 
         const getLikedTweets = await loggedUser.likes.map(tweet => {
-            const { _id, name, profilePicture } = tweet.creator;
-            const { description, createdAt, likes, id } = tweet;
-            return { description, createdAt, _id, name, profilePicture, likes, id };
+            const { id, name, profilePicture } = tweet.creator;
+            const { description, createdAt, likes, _id, image } = tweet;
+            return { description, createdAt, _id, name, profilePicture, likes, id, image };
         })
 
         res.status(200).json({ likedTweets: getLikedTweets });
