@@ -13,6 +13,7 @@ import AnonRoute from "./components/AnonRoute";
 
 import { AnimatePresence } from 'framer-motion';
 import ProfileEditPage from './pages/profileEditPage/ProfileEditPage';
+import VisitPage from './pages/visitPage/VisitPage';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <PrivateRoute exact path="/profile" component={ProfilePage} />
           <PrivateRoute exact path="/profile/edit" component={ProfileEditPage} />
           <PrivateRoute exact path="/feed" component={Feed} />
+          <PrivateRoute exact path='/visit/:userId' component={VisitPage} />
         
           <AnonRoute exact path="/signup" component={SignupPage} />
           <AnonRoute exact path="/login" component={LoginPage} />
