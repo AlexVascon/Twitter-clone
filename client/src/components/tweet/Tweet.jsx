@@ -18,6 +18,7 @@ import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
 import Divider from "@mui/material/Divider";
 import Thread from '../thread/Thread';
 import moment from "moment";
+import { Link } from 'react-router-dom';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -122,6 +123,17 @@ export default function Tweet(props) {
           console.error(err)
      }
   }
+
+  const retweet = async (tweetId) => {
+    try {
+      const data = { tweetId };
+      await authAxios.post('tweet/retweet', data);
+      console.log('here');
+    } catch (err) {
+      console.error(err);
+
+    }
+  }
   
   useEffect(() => {
       getTweet();
@@ -136,19 +148,26 @@ export default function Tweet(props) {
           className="top-half-tweet"
           onClick={() => handleCommentsExpand(tweet)}
         >
+        <Link to={`/visit/${tweet.id}`}>
           <Avatar src={tweet.profilePicture} sx={{ width: 50, height: 50 }} />
+          </Link>
           <div className="top-middle-tweet">
             <h4 className="tweet-creator-name">{tweet.name}</h4>
             <p className="tweet-description">{tweet.description}</p>
           </div>
           <MoreHorizIcon className="tweet-option-icon" />
         </div>
+        {tweet.image 
+        && <div className='tweet-image-container'>
+        <img className='tweet-image-view' src={tweet.image} alt="" />
+        </div> }
         <div className="bottom-half-tweet">
           <ChatBubbleOutlineRoundedIcon
             onClick={() => replyTweetPrompt(tweet)}
           />
           <span className='reply-count' >{tweet.comments.length}</span>
-          <RepeatRoundedIcon />
+          <RepeatRoundedIcon onClick={() => retweet(tweet._id)} />
+          {/* <span className='retweet-count' >{tweet.retweets.length}</span> */}
           <FavoriteBorderRoundedIcon onClick={() => likedTweet(tweet._id)} />
           <span className='like-count' >{tweet.likes.length}</span>
           <ShareOutlinedIcon />
@@ -185,6 +204,10 @@ export default function Tweet(props) {
               </div>
               <MoreHorizIcon className="tweet-option-icon" />
             </div>
+            {tweet.image 
+            && <div className='tweet-image-container'>
+                 <img className='tweet-image-view' src={tweet.image} alt="" />
+               </div> }
             <div>
             <p>{moment(tweet.createdAt).format("hh:mm • MMM DD, YYYY")}</p>
             </div>
@@ -194,7 +217,7 @@ export default function Tweet(props) {
                 onClick={() => replyTweetPrompt(tweet)}
               />
               <span className='reply-count' >{tweet.comments.length}</span>
-              <RepeatRoundedIcon />
+              <RepeatRoundedIcon onClick={() => retweet(tweet._id)} />
               <FavoriteBorderRoundedIcon onClick={() => likedTweet(tweet._id)} />
               <span className='like-count' >{tweet.likes.length}</span>
               <ShareOutlinedIcon />

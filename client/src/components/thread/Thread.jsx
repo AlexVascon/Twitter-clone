@@ -43,6 +43,7 @@ export default function Thread(props) {
     try{
         const res = await authAxios.get(`tweet/${props?.tweetId}`)
         setTweet(res?.data?.tweet);
+        console.log('tweet',res?.data?.tweet);
     } catch (err) {
         console.error(err);
     }
@@ -186,6 +187,10 @@ export default function Thread(props) {
               </div>
               <MoreHorizIcon className="tweet-option-icon" />
             </div>
+            {tweet.image 
+            && <div className='tweet-image-container'>
+                 <img className='tweet-image-view' src={tweet.image} alt="" />
+               </div> }
             <div>
             <p>{moment(tweet.createdAt).format("hh:mm • MMM DD, YYYY")}</p>
             </div>
